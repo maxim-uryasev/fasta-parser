@@ -1,0 +1,21 @@
+@startuml
+title UML Diagram - fasta_reader project
+
+class Seq {
+    - sequence : str
+    - inf : str
+    + init(sequence: str, inf: str)
+    + str() : str
+    + len() : int
+    + alph() : str
+}
+
+class FastaReader {
+    - path : str
+    + init(path: str)
+    + check() : bool
+    + read() : generator
+}
+
+FastaReader --> Seq : создает экземпляры
+@enduml
