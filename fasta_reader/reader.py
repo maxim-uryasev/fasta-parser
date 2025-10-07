@@ -8,6 +8,9 @@ class Seq:
     def __str__(self):
         return f">{self.header}\n{self.sequence}"
 
+    def __repr__(self):
+        return f"Seq(header='{self.header}', sequence='{self.sequence[:20]}...')"
+
     def __len__(self):
         return len(self.sequence)
 
@@ -31,12 +34,15 @@ class FastaReader:
         self.filename = filename
 
     def __iter__(self):
-        with open(self.filename, 'r') as file:
+        """Генератор для чтения больших файлов"""
+        with open(self.filename, 'r', encoding='utf-8') as file:
             header = ""
             sequence = ""
 
             for line in file:
                 line = line.strip()
+                if not line:
+                    continue
                 if line.startswith('>'):
                     if header:
                         yield Seq(header, sequence)
@@ -50,7 +56,7 @@ class FastaReader:
 
 
 def main():
-    reader = FastaReader(r"C:\Users\Honor\Desktop\fasta_project\test.fasta.txt")
+    reader = FastaReader('test_utf8.fasta')
 
     print("Чтение FASTA файла:")
     for i, seq in enumerate(reader, 1):
@@ -63,6 +69,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
